@@ -1,0 +1,53 @@
+# ============================================================
+# Sources config — edit here only. No code changes needed.
+# Switch mode with:  --source rtsp  |  --source mp4
+# Select items with: --cameras cam1,cam3
+# RTSP credentials: set RTSP_USERNAME / RTSP_PASSWORD / RTSP_HOST in .env
+# ============================================================
+
+rtsp:
+  - id: cam1
+    name: Channel 1
+    enabled: true
+    channel: 1
+    subtype: 1
+
+  - id: cam2
+    name: Channel 4
+    enabled: true
+    channel: 4
+    subtype: 1
+
+  - id: cam3
+    name: Channel 5
+    enabled: true
+    channel: 5
+    subtype: 1
+
+  - id: cam4
+    name: Channel 6
+    enabled: true
+    channel: 6
+    subtype: 1
+
+# MP4 — set enabled: true and your path (or drop files in input/)
+mp4:
+  - id: vid1
+    name: Sample video
+    enabled: false
+    path: "input/your_video.mp4"
+
+  - id: vid2
+    name: Temp video 2
+    enabled: false
+    path: "input/temp_cam2.mp4"
+
+  - id: vid3
+    name: Temp video 3
+    enabled: false
+    path: "input/temp_cam3.mp4"
+
+  - id: vid4
+    name: Temp video 4
+    enabled: false
+    path: "input/temp_cam4.mp4"

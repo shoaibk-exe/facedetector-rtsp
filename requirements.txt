@@ -1,0 +1,6 @@
+insightface
+onnxruntime-gpu
+opencv-python
+numpy
+python-dotenv
+PyYAML
