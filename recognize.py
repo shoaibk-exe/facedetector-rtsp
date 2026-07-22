@@ -48,30 +48,19 @@ def draw_pipeline_faces(frame, faces: list[DisplayFace], header: str = ""):
 
     for det in faces:
         x1, y1, x2, y2 = det.bbox
-        if det.ghost:
-            color = (180, 180, 180)
-            thickness = 1
-        elif det.confirmed:
-            color = (0, 255, 0)
-            thickness = 2
-        elif det.label.startswith("track"):
-            color = (255, 200, 0)
-            thickness = 2
-        elif det.label.endswith("?"):
-            color = (0, 255, 255)
-            thickness = 2
-        else:
+        if det.label == "Unknown":
             color = (0, 165, 255)
-            thickness = 2
+        else:
+            color = (0, 255, 0)
 
-        pct = det.score * 100.0
-        cv2.rectangle(frame, (x1, y1), (x2, y2), color, thickness)
+        pct = max(0.0, det.score) * 100.0
+        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
         cv2.putText(
             frame,
-            f"ID{det.track_id} {det.label} {pct:.1f}%",
+            f"{det.label} {pct:.1f}%",
             (x1, max(20, y1 - 10)),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.65,
+            0.7,
             color,
             2,
         )
@@ -81,16 +70,13 @@ def draw_pipeline_faces(frame, faces: list[DisplayFace], header: str = ""):
 def detections_for_log(faces: list[DisplayFace]) -> list[dict]:
     rows = []
     for det in faces:
+        scores = det.scores or {det.label: det.score}
         rows.append(
             {
                 "label": det.label,
                 "score": det.score,
-                "scores": {det.label: det.score},
+                "scores": scores,
                 "bbox": det.bbox,
-                "track_id": det.track_id,
-                "confirmed": det.confirmed,
-                "samples": det.samples,
-                "votes": det.votes,
             }
         )
     return rows
