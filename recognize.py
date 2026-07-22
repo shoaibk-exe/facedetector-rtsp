@@ -594,6 +594,9 @@ def main():
             raise SystemExit(str(exc)) from exc
 
     print(f"Selected ({source}): {[c.id for c in selected]}")
+    for item in selected:
+        loc = item.path if item.kind == "mp4" else item.masked_url()
+        print(f"  {item.id}: {item.name} -> {loc}")
 
     if source == "mp4":
         print(f"Display: {'ON' if show_display else 'OFF'}")

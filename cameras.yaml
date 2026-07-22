@@ -33,9 +33,9 @@ rtsp:
 # MP4 — set enabled: true and your path (or drop files in input/)
 mp4:
   - id: vid1
-    name: Sample video
-    enabled: false
-    path: "input/your_video.mp4"
+    name: Camera 3 customer enter
+    enabled: true
+    path: "input/New folder/Camera_3_customer_enter_clean_20260713_225257.mp4"
 
   - id: vid2
     name: Temp video 2

@@ -132,24 +132,25 @@ python recognize.py --source rtsp --display
 
 ### Which file controls the video?
 
-| File | Purpose |
-|------|---------|
-| **`cameras.yaml`** | **YES — app reads this** |
-| `README.md` | **NO — instructions only, ignored by the app** |
+```
+  README.md  ──X──>  NOT used by the app (docs only)
 
-If you edit README and nothing changes, that is expected. **Always edit `cameras.yaml`.**
+  cameras.yaml  ──✓──>  THIS is what recognize.py reads
+```
 
-Open **`cameras.yaml`** and set:
+**Do not edit README to change videos.** Open **`cameras.yaml`** in the project root.
+
+Example — edit the `mp4:` section in **`cameras.yaml`**:
 
 ```yaml
 mp4:
   - id: vid1
-    name: Pano ch5
+    name: Camera 3 customer enter
     enabled: true
-    path: "input/Pano_ch5_20260705000156_20260705000226.mp4"
+    path: "input/New folder/Camera_3_customer_enter_clean_20260713_225257.mp4"
 ```
 
-Put the `.mp4` file in `input/` (or use a full path).
+Use forward slashes `/` in the path (works on Windows too).
 
 Run:
 
