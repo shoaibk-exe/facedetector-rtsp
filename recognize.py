@@ -113,10 +113,17 @@ def process_mp4(
     for video in videos:
         video_path = video.path
         if not os.path.isfile(video_path):
-            print(f"\n[{video.id}] SKIP — file not found: {video_path}")
+            print(f"\n[{video.id}] SKIP — file not found")
+            print(f"         path: {video_path}")
+            print(f"         cwd:  {os.getcwd()}")
+            print(
+                "         Tip: in cameras.yaml use forward slashes, e.g.\n"
+                '         path: "input/New folder/my_video.mp4"'
+            )
             continue
 
-        print(f"\n[{video.id}] Processing: {video.name} -> {video_path}")
+        print(f"\n[{video.id}] Processing: {video.name}")
+        print(f"[{video.id}] File: {video_path}")
         if show_display:
             print(f"[{video.id}] Display ON — press 'q' to skip to next video")
 

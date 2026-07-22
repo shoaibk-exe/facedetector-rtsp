@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -128,7 +129,7 @@ def _parse_entries(raw_list, kind: str) -> list[Camera]:
                 )
             )
         else:
-            path = str(entry.get("path") or "").strip()
+            path = str(entry.get("path") or "").strip().strip('"').strip("'")
             if not path:
                 raise ValueError(f"MP4 entry '{cam_id}' needs a 'path'")
             cameras.append(
@@ -137,11 +138,28 @@ def _parse_entries(raw_list, kind: str) -> list[Camera]:
                     name=str(entry.get("name") or cam_id).strip(),
                     enabled=bool(entry.get("enabled", True)),
                     kind="mp4",
-                    path=path,
+                    path=resolve_media_path(path),
                 )
             )
 
     return cameras
+
+
+def resolve_media_path(raw: str) -> str:
+    """
+    Resolve MP4 path from cameras.yaml to an absolute filesystem path.
+    Relative paths are relative to the project root (not the shell cwd).
+    Accepts Windows backslashes; strips wrapping quotes.
+    """
+    text = (raw or "").strip().strip('"').strip("'")
+    # YAML often breaks on \N \t etc. — normalize separators
+    text = text.replace("\\", os.sep)
+    path = Path(text).expanduser()
+    if not path.is_absolute():
+        path = (ROOT / path).resolve()
+    else:
+        path = path.resolve()
+    return str(path)
 
 
 def load_cameras(
@@ -233,14 +251,16 @@ def discover_mp4_in_folder(folder: str | None = None) -> list[Camera]:
         return []
 
     cameras: list[Camera] = []
-    for idx, path in enumerate(sorted(base.glob("*.mp4")), start=1):
+    # Include nested folders under input/
+    files = sorted(base.rglob("*.mp4"))
+    for idx, path in enumerate(files, start=1):
         cameras.append(
             Camera(
                 id=f"input{idx}",
                 name=path.stem,
                 enabled=True,
                 kind="mp4",
-                path=str(path),
+                path=str(path.resolve()),
             )
         )
     return cameras

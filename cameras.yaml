@@ -30,7 +30,9 @@ rtsp:
     channel: 6
     subtype: 1
 
-# MP4 — set enabled: true and your path (or drop files in input/)
+# MP4 — set enabled: true and your path
+# Use FORWARD SLASHES /  (do not use \ — YAML breaks paths)
+# Relative paths are from the project folder.
 mp4:
   - id: vid1
     name: Camera 3 customer enter
