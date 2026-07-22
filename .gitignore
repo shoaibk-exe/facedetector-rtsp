@@ -12,7 +12,7 @@ __pycache__/
 .mypy_cache/
 
 # Local data & artifacts
-database/*.pkl
+database/*
 output/
 input/*
 !input/README.txt
